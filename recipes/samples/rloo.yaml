@@ -1,0 +1,55 @@
+# Model arguments
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+base_model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+model_revision: main
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+use_liger_lm: False
+reward_model_path: Skywork/Skywork-Reward-Llama-3.1-8B-v0.2
+
+# Data training arguments
+dataset_name: argilla/ultrafeedback-binarized-preferences-cleaned
+dataset_split: train
+preprocessing_num_workers: 32
+auto_insert_empty_system_msg: false
+
+# RLOO trainer config
+total_episodes: 30000
+num_ppo_epochs: 1
+num_mini_batches: 4
+per_device_train_batch_size: 4
+local_rollout_forward_batch_size: 8
+
+stop_token: eos
+rloo_k: 2
+
+bf16: true
+kl_coef: 0.05
+do_eval: false
+tf32: true
+torch_compile: false
+optim: paged_adamw_8bit
+gradient_accumulation_steps: 2
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: False
+hub_model_id: ### NOTE: HF repo id
+learning_rate: 2.0e-06
+log_level: info
+logging_steps: 5  
+logging_strategy: steps
+lr_scheduler_type: linear
+response_length: 1024
+max_steps: -1
+output_dir: ### NOTE: Output directory for the model checkpoint
+overwrite_output_dir: true
+remove_unused_columns: true
+report_to:
+- wandb
+save_strategy: "epoch"
+seed: 2
+warmup_ratio: 0.03
+
+# Hub
+push_to_hub: true
+hub_private_repo: true

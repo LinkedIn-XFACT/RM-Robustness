@@ -1,0 +1,48 @@
+# Model arguments
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+model_revision: main
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+use_liger_kernel: true
+
+# Data training arguments
+dataset_name: HuggingFaceH4/ultrachat_200k
+dataset_split: 
+- train_sft
+dataset_text_field: text
+preprocessing_num_workers: 16
+auto_insert_empty_system_msg: true
+
+# SFT trainer config
+bf16: true
+tf32: true
+torch_compile: true
+do_eval: false
+packing: true
+gradient_accumulation_steps: 4
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: False
+hub_model_id: ### NOTE: HF repo id
+learning_rate: 1.0e-05
+log_level: info
+logging_steps: 10
+logging_strategy: steps
+lr_scheduler_type: cosine
+max_seq_length: 2048
+max_steps: -1
+num_train_epochs: 1
+output_dir: ### NOTE: set output directory here
+overwrite_output_dir: true
+per_device_train_batch_size: 16
+remove_unused_columns: true
+report_to:
+- tensorboard
+- wandb
+save_strategy: "epoch"
+seed: 42
+warmup_ratio: 0.1
+
+# Hub
+push_to_hub: true
+hub_private_repo: true
